@@ -1,0 +1,261 @@
+# ========================================
+# == Base XFCE DE (All Editions)        ==
+# ========================================
+7zip
+alsa-ucm-conf
+anacron
+apparmor
+apparmor-profiles
+at-spi2-core
+bash-completion
+blueman
+bluez
+bluez-cups
+bluez-tools
+breeze-cursor-theme
+btop
+cifs-utils
+colord
+cups
+cups-bsd
+cups-client
+cups-filters
+curl
+dbus-x11
+dconf-cli
+elementary-xfce-icon-theme
+elogind +d=excalibur
+elpa-bash-completion
+evince
+evince-common
+exfatprogs
+f2fs-tools
+fastfetch
+fd-find
+ffmpeg
+fontconfig
+fontconfig-config
+fonts-liberation
+fonts-nanum
+fonts-sawarabi-gothic
+fonts-tlwg-waree
+foomatic-db-compressed-ppds
+fzf
+galculator
+gdebi
+ghex
+ghostscript
+gir1.2-cinnamondesktop-3.0
+gir1.2-cmenu-3.0
+gir1.2-cvc-1.0
+gir1.2-gmenu-3.0
+git
+glib-networking
+gnome-control-center -d=excalibur
+gnome-disk-utility
+gnome-font-viewer -d=excalibur
+gnome-keyring -d=excalibur
+gnome-packagekit
+gnome-packagekit-common
+gnome-session -d=excalibur
+gnome-shell -d=excalibur
+gnome-shell-extension-manager -d=excalibur
+gnome-system-monitor
+gnome-terminal -d=excalibur
+gnome-themes-extra -d=excalibur
+gnome-tweaks -d=excalibur
+gparted
+grsync
+grub-efi-amd64-bin
+grub-pc
+gsettings-desktop-schemas
+gtk2-engines
+gtk2-engines-murrine
+gtk2-engines-pixbuf
+gvfs-backends
+icewm
+inputattach
+inxi
+keyutils
+laptop-detect
+libatk-adaptor
+libcinnamon-desktop4t64
+libcinnamon-menu-3-0
+libcvc0t64
+libevent-2.1-7
+libfontconfig1
+libfontenc1
+libgail-common
+libgl1-mesa-dri
+libglib2.0-bin
+libgsettings-qt1
+libgtk2.0-bin
+libnotify-bin
+libpam-elogind +d=excalibur
+libpam-gnome-keyring -d=excalibur
+libqt5widgets5
+libvulkan-dev
+libxcb-cursor0
+libxcursor1
+libxfce4ui-utils
+libxml2-utils
+lm-sensors
+lxappearance
+lxappearance-obconf
+lxde-core
+lxinput
+lxrandr
+lxsession-edit
+lz4
+mate-polkit
+mesa-libgallium -da=i386 -d=bookworm
+mesa-utils
+mmv
+mousepad
+mtools
+mutter -d=excalibur
+nala
+nemo
+nemo-data
+nemo-fileroller
+network-manager-applet
+network-manager-gnome -d=trixie -d=sid -d=noble -d=resolute -d=excalibur
+nm-connection-editor
+ntfs-3g
+openprinting-ppds
+orchis-gtk-theme
+pavucontrol
+pcmanfm
+pipewire
+pipewire-alsa -d=excalibur
+pipewire-audio
+pipewire-audio-client-libraries
+pipewire-bin
+pipewire-daemon
+pipewire-jack
+pipewire-module-xrdp
+pipewire-pulse
+pipx
+pkexec
+plasma-discover
+plasma-discover-backend-flatpak
+polkitd
+profile-sync-daemon
+redshift
+sddm
+sddm-theme-maui
+slick-greeter
+smbclient
+sudo
+system-config-printer
+system-config-printer-common
+thunar
+thunar-volman
+tracker
+tracker-extract
+tracker-miner-fs
+update-inetd
+viewnior
+vlc
+vulkan-tools
+wireplumber
+x11-apps
+x11-session-utils
+x11-utils
+x11-xserver-utils
+xapps-common
+xarchiver
+xauth
+xbacklight
+xcursor-themes
+xdg-user-dirs
+xdg-user-dirs-gtk
+xfce4
+xfce4-appfinder
+xfce4-notifyd
+xfce4-panel
+xfce4-power-manager
+xfce4-power-manager-plugins
+xfce4-screenshooter
+xfce4-session
+xfce4-settings
+xfce4-terminal
+xfce4-whiskermenu-plugin
+xfce4-xkb-plugin
+xfconf
+xfdesktop4
+xfonts-base
+xfonts-encodings
+xfonts-scalable
+xfonts-utils
+xfwm4
+xmlstarlet
+xsensors
+xserver-xorg
+xserver-xorg-video-amdgpu
+xserver-xorg-video-ati
+xserver-xorg-video-fbdev
+xserver-xorg-video-radeon
+zstd
+
+# ========================================
+# == Minimum Edition (only)             ==
+# ========================================
+alsa-utils +pv=minimum
+nodm +pv=minimum
+volumeicon-alsa +pv=minimum
+xarchiver
+xfce4-battery-plugin
+
+# ========================================
+# == Standard Edition (and above)       ==
+# ========================================
+avahi-daemon -pv=minimum
+blueman -pv=minimum
+engrampa -pv=minimum
+lightdm -pv=minimum
+lightdm-gtk-greeter -pv=minimum
+minios-configurator -pv=minimum
+minios-installer -pv=minimum
+minios-session-manager -pv=minimum
+minios-kernel-manager -pv=minimum
+minios-store -pv=minimum
+minios-store-gui -pv=minimum
+minios-image-builder -pv=minimum
+minios-module-manager -pv=minimum
+driveutility -pv=minimum && python3-zstandard -pv=minimum
+pavucontrol -pv=minimum
+pulseaudio -pv=minimum -dp=debian -dp=ubuntu -d=excalibur
+pulseaudio-module-bluetooth -pv=minimum -dp=debian -dp=ubuntu -d=excalibur
+pipewire -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+pipewire-pulse -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+wireplumber -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+pipewire-audio-client-libraries -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+libspa-0.2-bluetooth -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+dbus-user-session -pv=minimum +dp=debian +dp=ubuntu +d=excalibur
+
+samba-common -pv=minimum
+thunar-archive-plugin -pv=minimum
+tumbler -pv=minimum
+xdg-user-dirs -pv=minimum
+xdg-user-dirs-gtk -pv=minimum
+xfce4-power-manager-plugins -pv=minimum
+xfce4-pulseaudio-plugin -pv=minimum -d=buster -d=bionic -d=focal
+volumeicon-alsa -pv=minimum +d=buster +d=bionic +d=focal
+xfce4-screenshooter -pv=minimum
+xfce4-taskmanager -pv=minimum
+xfce4-terminal -pv=minimum
+xfce4-whiskermenu-plugin -pv=minimum
+
+# ========================================
+# == Toolbox Edition (and above)        ==
+# ========================================
+gtk-update-icon-cache +pv=toolbox +pv=ultra
+menulibre +pv=toolbox +pv=ultra
+open-vm-tools-desktop +pv=toolbox +pv=ultra
+virtualbox-guest-x11 +pv=toolbox +pv=ultra +dp=debian +d=excalibur
+qt5-gtk2-platformtheme +pv=toolbox +pv=ultra
+qt6-gtk-platformtheme +pv=toolbox +pv=ultra && qt5-gtk-platformtheme +pv=toolbox +pv=ultra
+xfce4-notifyd +pv=toolbox +pv=ultra
+pulseaudio-module-xrdp -dp=debian +pv=toolbox +pv=ultra -d=excalibur
+pipewire-module-xrdp +dp=debian +d=excalibur +pv=toolbox +pv=ultra

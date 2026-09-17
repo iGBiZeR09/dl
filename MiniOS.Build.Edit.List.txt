@@ -1,0 +1,182 @@
+sudo parted -s /dev/sdx resizepart x 100%
+sudo mkfs.btrfs -L persistence -fv -s 4K -n 16K -O no-holes /dev/sdx
+sudo mkfs.ext4 -F -L persistence -b 4096 -m 0 -E stride=2,stripe-width=2 -O "^has_journal,sparse_super,dir_index" "/dev/sdxx"
+sudo partprobe /dev/sdx
+sudo systemctl daemon-reload
+sudo systemctl restart udisks2.service
+
+
+#/linux-live/initramfs/dracut-mos/90minios/module-setup.sh
+
+#edit :
+
+install_bundled_crypt() {
+    local payload=$1 manifest="$1/../buildroot/crypt_payload.sha256" path
+    local files=(
+        usr/sbin/cryptsetup usr/sbin/dmsetup sbin/losetup
+        lib/libc.so lib/ld-musl-i386.so.1
+        usr/lib/libcryptsetup.so.12 usr/lib/libcryptsetup.so.12.11.0
+        usr/lib/libpopt.so.0 usr/lib/libpopt.so.0.0.2
+        lib/libuuid.so.1 lib/libuuid.so.1.3.0
+        lib/libblkid.so.1 lib/libblkid.so.1.1.0
+        usr/lib/libdevmapper.so.1.02 usr/lib/libargon2.so.1
+        usr/lib/libjson-c.so.5 usr/lib/libjson-c.so.5.4.0
+        lib/libsmartcols.so.1 lib/libsmartcols.so.1.1.0
+    )
+
+    for path in "${files[@]}"; do
+        [ -e "$payload/$path" ] || [ -L "$payload/$path" ] || return 1
+    done
+    if [ ! -f "$manifest" ] || ! (cd "$payload" && sha256sum -c "$manifest" >/dev/null); then
+        echo "E: Bundled crypto payload failed integrity verification" >&2
+        return 1
+    fi
+    [ "$(readlink "$payload/lib/ld-musl-i386.so.1")" = libc.so ] || return 1
+    [ "$(readlink "$payload/lib/libblkid.so.1")" = libblkid.so.1.1.0 ] || return 1
+    [ "$(readlink "$payload/lib/libsmartcols.so.1")" = libsmartcols.so.1.1.0 ] || return 1
+    [ "$(readlink "$payload/lib/libuuid.so.1")" = libuuid.so.1.3.0 ] || return 1
+    [ "$(readlink "$payload/usr/lib/libcryptsetup.so.12")" = libcryptsetup.so.12.11.0 ] || return 1
+    [ "$(readlink "$payload/usr/lib/libjson-c.so.5")" = libjson-c.so.5.4.0 ] || return 1
+    [ "$(readlink "$payload/usr/lib/libpopt.so.0")" = libpopt.so.0.0.2 ] || return 1
+    (cd "$payload" && cp -a --parents "${files[@]}" "$initdir")
+}
+
+
+#/linux-live/minioslib
+#edit :
+
+    beowulf | chimaera | daedalus | excalibur)
+        #DISTRIBUTION_URL="http://jp.deb.devuan.org/merged"
+        DISTRIBUTION_URL="http://deb.devuan.org/merged"
+
+#edit :
+
+update_resolv_conf() {
+    current_function
+
+    local DIR_PATH="${1}"
+    local RESOLV_PATH="${DIR_PATH}/etc/resolv.conf"
+    local BACKUP_PATH="${RESOLV_PATH}.bak"
+
+    if [ -f "/.dockerenv" ] || [ "${container}" = "podman" ] || [ "${DISTRIBUTION_PROFILE}" = "ubuntu" ]; then
+        if [ -e "${RESOLV_PATH}" ] || [ -L "${RESOLV_PATH}" ]; then
+            
+            cp -L "${RESOLV_PATH}" "${BACKUP_PATH}" 2>/dev/null || {
+                rm -f "${BACKUP_PATH}"
+                echo "Warning: Could not backup ${RESOLV_PATH}" >&2
+            }
+
+            if [ -L "${RESOLV_PATH}" ]; then
+                rm -f "${RESOLV_PATH}"
+            fi
+
+            echo "nameserver 1.1.1.1" > "${RESOLV_PATH}" || {
+                echo "Error: Failed to write ${RESOLV_PATH}" >&2
+                return 1
+            }
+        fi
+    fi
+}
+
+#edit :
+
+LIVE_USER_PASSWORD_CRYPTED='${LIVE_ROOT_PASSWORD_CRYPTED}'
+LIVE_ROOT_PASSWORD_CRYPTED='${LIVE_ROOT_PASSWORD_CRYPTED}'
+
+LIVE_LOCALES="en_US.UTF-8"
+LIVE_TIMEZONE="Etc/GMT-7"
+LIVE_KEYBOARD_MODEL="pc105"
+LIVE_KEYBOARD_LAYOUTS="us,th"
+LIVE_KEYBOARD_OPTIONS="grp:toggle,grp_led:scroll"
+LIVE_KEYBOARD_VARIANTS=",tis"
+
+
+#add :
+
+insmod regexp
+insmod gettext
+insmod all_video
+insmod gfxterm
+insmod png
+${GRUB_TERMINAL_SETTINGS}
+
+#edit :
+
+BOOT_SETTINGS="verbose"
+
+local CHOOSE_SESSION_DISK="Choose session disk during startup"
+
+LABEL asksessiondisk
+MENU LABEL ${CHOOSE_SESSION_DISK}
+KERNEL /${LIVEKITNAME}/boot/${VMLINUZNAME}
+APPEND vga=788 initrd=/${LIVEKITNAME}/boot/${INITRFSNAME} ${DEFAULT_SETTINGS} ${BOOT_SETTINGS} perchdir=askdisk locales=${LOCALE_UTF}$([ -n "${TIMEZONE}" ] && echo " timezone=${TIMEZONE}")$([ -n "${KEYBOARD}" ] && echo " keyboard-layouts=${KEYBOARD}")
+
+
+#search :
+
+set timeout=5
+
+search --set -f 
+
+
+#add :
+
+set loading=\$"Loading kernel and ramdisk..."
+set choosesessiondisk=\$"Choose session disk during startup"
+set ZeR09=\$"1Computer.PK Grub Boot Menu"
+
+export choosesessiondisk
+export ZeR09
+
+menuentry "\$choosesessiondisk" --class switchdisk {
+    echo \$loading
+    search --set -f /${LIVEKITNAME}/boot/${VMLINUZNAME}
+    set gfxpayload=\$gfxpayload
+    linux /${LIVEKITNAME}/boot/${VMLINUZNAME} ${DEFAULT_SETTINGS} ${BOOT_SETTINGS} perchdir=askdisk locales=\$lang_utf \$extra_params
+    initrd /${LIVEKITNAME}/boot/${INITRFSNAME}
+}
+menuentry "\$ZeR09" --class ZeR09 {
+    echo \$loading
+    set gfxpayload=\$gfxpayload
+    echo Searching... /minios/boot/grub/1compk.cfg
+    search --set -f /minios/boot/grub/1compk.cfg
+
+    echo Loading...
+configfile /minios/boot/grub/1compk.cfg
+}
+
+
+menuentry "Choose session disk during startup" --class switchdisk {
+    echo \$message
+    search --set -f /${LIVEKITNAME}/boot/${VMLINUZNAME}
+    set gfxpayload=\$gfxpayload
+    linux /${LIVEKITNAME}/boot/${VMLINUZNAME} ${DEFAULT_SETTINGS} ${BOOT_SETTINGS} perchdir=askdisk
+    initrd /${LIVEKITNAME}/boot/${INITRFSNAME}
+}
+menuentry "1Computer.PK Grub Boot Menu" --class ZeR09 {
+    echo \$message
+    echo Searching... /minios/boot/grub/1compk.cfg
+    search --set -f /minios/boot/grub/1compk.cfg
+
+    echo Loading...
+configfile /minios/boot/grub/1compk.cfg
+}
+
+
+#add :
+        # File systems
+        "iso9660.mod" "udf.mod" "fat.mod" "ext2.mod" "btrfs.mod" "f2fs.mod" "xfs.mod" "ntfs.mod" "exfat.mod"
+
+
+            iso9660 udf fat ext2 btrfs f2fs xfs ntfs exfat \
+
+            iso9660 udf fat ext2 btrfs f2fs xfs ntfs exfat \
+
+
+#edit :
+
+    PERCHIMG="resizeme.img"
+
+    # Prepare persistence image
+    dd if=/dev/zero of="${PERCHIMG}" bs=1k count=0 seek=128
+

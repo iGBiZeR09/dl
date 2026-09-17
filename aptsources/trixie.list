@@ -1,0 +1,36 @@
+deb https://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
+
+deb https://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+
+deb https://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ trixie-backports main contrib non-free non-free-firmware
+
+deb https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+#deb-src https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+
+deb https://mirrors.xtom.sg/debian/ trixie main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian/ trixie-updates main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian/ trixie-backports main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian-security/ trixie-security main contrib non-free non-free-firmware
+
+#deb https://mirror.sg.gs/debian/ trixie main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian/ trixie-updates main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian/ trixie-backports main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian-security/ trixie-security main contrib non-free non-free-firmware
+
+#deb https://mirror.twds.com.tw/debian/ trixie main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian/ trixie-backports main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian-security/ trixie-security main contrib non-free non-free-firmware
+
+#deb https://ftp.riken.jp/Linux/debian/debian/ trixie main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian/ trixie-updates main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian/ trixie-backports main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian-security/ trixie-security main contrib non-free non-free-firmware
+
+#deb https://mirrors.huaweicloud.com/debian/ trixie main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian/ trixie-updates main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian/ trixie-backports main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian-security/ trixie-security main contrib non-free non-free-firmware

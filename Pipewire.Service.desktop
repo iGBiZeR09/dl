@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=PipeWire Media Service
+Comment=Start PipeWire, PipeWire-Pulse, and WirePlumber sequentially
+Exec=sh -c "pipewire & sleep 1 && pipewire-pulse & sleep 1 && wireplumber"
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
+Icon=audio-speakers

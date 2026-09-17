@@ -1,0 +1,19 @@
+deb http://deb.devuan.org/merged excalibur main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged excalibur main contrib non-free non-free-firmware
+
+deb http://deb.devuan.org/merged excalibur-updates main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged excalibur-updates main contrib non-free non-free-firmware
+
+deb http://deb.devuan.org/merged excalibur-security main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged excalibur-security main contrib non-free non-free-firmware
+
+deb http://jp.deb.devuan.org/merged/ excalibur main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ excalibur-backports main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ excalibur-updates main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ excalibur-security main contrib non-free non-free-firmware
+
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged excalibur main contrib non-free
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ excalibur main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ excalibur-backports main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ excalibur-updates main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ excalibur-security main contrib non-free non-free-firmware

@@ -1,0 +1,19 @@
+deb http://deb.devuan.org/merged distro main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged distro main contrib non-free non-free-firmware
+
+deb http://deb.devuan.org/merged distro-updates main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged distro-updates main contrib non-free non-free-firmware
+
+deb http://deb.devuan.org/merged distro-security main contrib non-free non-free-firmware
+#deb-src http://deb.devuan.org/merged distro-security main contrib non-free non-free-firmware
+
+deb http://jp.deb.devuan.org/merged/ distro main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ distro-backports main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ distro-updates main contrib non-free non-free-firmware
+deb http://jp.deb.devuan.org/merged/ distro-security main contrib non-free non-free-firmware
+
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged distro main contrib non-free
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ distro main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ distro-backports main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ distro-updates main contrib non-free non-free-firmware
+deb http://mirrors.tuna.tsinghua.edu.cn/devuan/merged/ distro-security main contrib non-free non-free-firmware

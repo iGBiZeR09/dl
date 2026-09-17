@@ -1,0 +1,36 @@
+deb https://deb.debian.org/debian/ distro main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ distro main contrib non-free non-free-firmware
+
+deb https://deb.debian.org/debian/ distro-updates main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ distro-updates main contrib non-free non-free-firmware
+
+deb https://deb.debian.org/debian distro-backports main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian/ distro-backports main contrib non-free non-free-firmware
+
+deb https://security.debian.org/debian-security distro-security main contrib non-free non-free-firmware
+#deb-src https://security.debian.org/debian-security distro-security main contrib non-free non-free-firmware
+
+deb https://mirrors.xtom.sg/debian/ distro main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian/ distro-updates main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian/ distro-backports main contrib non-free non-free-firmware
+deb https://mirrors.xtom.sg/debian-security/ distro-security main contrib non-free non-free-firmware
+
+#deb https://mirror.sg.gs/debian/ distro main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian/ distro-updates main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian/ distro-backports main contrib non-free non-free-firmware
+#deb https://mirror.sg.gs/debian-security/ distro-security main contrib non-free non-free-firmware
+
+#deb https://mirror.twds.com.tw/debian/ distro main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian/ distro-updates main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian/ distro-backports main contrib non-free non-free-firmware
+#deb https://mirror.twds.com.tw/debian-security/ distro-security main contrib non-free non-free-firmware
+
+#deb https://ftp.riken.jp/Linux/debian/debian/ distro main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian/ distro-updates main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian/ distro-backports main contrib non-free non-free-firmware
+#deb https://ftp.riken.jp/Linux/debian/debian-security/ distro-security main contrib non-free non-free-firmware
+
+#deb https://mirrors.huaweicloud.com/debian/ distro main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian/ distro-updates main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian/ distro-backports main contrib non-free non-free-firmware
+#deb https://mirrors.huaweicloud.com/debian-security/ distro-security main contrib non-free non-free-firmware
