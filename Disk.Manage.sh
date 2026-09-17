@@ -208,10 +208,10 @@ install_grub() {
   [[ -d "$efi_mount" ]] || die "Mountpoint $efi_mount missing."
 
   echo "Installing UEFI GRUB..."
-  sudo grub-install --target=x86_64-efi --boot-directory="$efi_mount/minios/boot/EFI" --efi-directory="$efi_mount/minios/boot" --removable || true
+  sudo grub-install --target=x86_64-efi --boot-directory="$efi_mount/minios/boot" --efi-directory="$efi_mount/minios/boot" --removable || true
 
   echo "Installing BIOS GRUB..."
-  sudo grub-install --target=i386-pc --boot-directory="$efi_mount/minios/boot/EFI" "$disk" --recheck --force || true
+  sudo grub-install --target=i386-pc --boot-directory="$efi_mount/minios/boot" "$disk" --recheck --force || true
 
   unmount_target "$disk"
 }
