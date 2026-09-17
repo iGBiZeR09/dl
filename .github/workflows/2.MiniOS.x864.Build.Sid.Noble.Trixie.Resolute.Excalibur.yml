@@ -2,7 +2,7 @@ name: 2. MiniOS x864 Build LXFice Sid Noble Trixie Resolute Excalibur
 
 on:
   schedule:
-    - cron: '0 0 */2 * *' # Run every 2 Days
+    - cron: '0 0 */10 * *' # Run every 10 Days
   workflow_dispatch:
 
 env:
