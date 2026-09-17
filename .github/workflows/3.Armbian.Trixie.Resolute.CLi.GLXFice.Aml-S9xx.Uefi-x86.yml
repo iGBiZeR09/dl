@@ -2,7 +2,7 @@ name: 3. Armbian Build Trixie Resolute CLi GLXFice Aml-S9xx Uefi-x86
 
 on:
   schedule:
-    - cron: '0 0 */2 * *' # Run every 2 Days
+    - cron: '0 0 */10 * *' # Run every 10 Days
   workflow_dispatch:
 
 env:
