@@ -1,0 +1,146 @@
+name: 3. Armbian Build Trixie Resolute CLi GLXFice Aml-S9xx Uefi-x86
+
+on:
+  schedule:
+    - cron: '0 0 */2 * *' # Run every 2 Days
+  workflow_dispatch:
+
+env:
+  TZ: Etc/GMT-7
+  iMageSize: 50GiB
+  MainDir: /builder
+
+  BuildDL: https://github.com/1compk/dl/releases/download/dl/Armbian.Build.v26.2.0-trunk.844.fix.tar.xz
+  BuildSource: Armbian.Build.v26.2.0-trunk.844.fix.tar.xz
+  BuildDir: zArmbian.Build.2026
+  UefiVersion: 26.5.1
+  BoxVersion: Lastest
+
+jobs:
+  build:
+    name: Armbian-${{ matrix.board }}-${{ matrix.release }}-${{ matrix.type }}
+    runs-on: ${{ matrix.board == 'uefi-x86' && 'ubuntu-26.04' || 'ubuntu-26.04-arm' }}
+    timeout-minutes: 600
+    strategy:
+      fail-fast: false
+      matrix:
+        release: [ resolute, trixie ]
+        board: [ aml-s9xx-box, uefi-x86 ]
+        type: [ CLi, LXFice ]
+
+        exclude:
+          # ===== (No CLi LXFice) =====
+          #- { board: uefi-x86, release: trixie, type: LXFice }
+          - { board: aml-s9xx-box, type: CLi }
+          #- { release: forky, type: CLi }
+          - { release: resolute, type: LXFice }
+
+        include:
+          # ===== (Build CLi) =====
+          - type: CLi
+            desktop: no
+            environment: ""
+            config_name: ""
+            revision: Lastest
+
+          # ===== (Build LXFice) =====
+          - type: LXFice
+            desktop: yes
+            environment: xfce
+            config_name: config_base
+            revision: 26.2.0-trunk.844
+
+    steps:
+      - name: Prepare | Init & LVM
+        run: |
+          lscpu | grep -E "Model name|CPU\(s\):"
+          sudo timedatectl set-timezone "${TZ}"
+          sudo apt-get install -y debootstrap squashfs-tools xz-utils xorriso \
+           mtools rsync grub-common e2fsprogs lvm2 pv wget
+          
+          #sudo modprobe f2fs        
+          sudo truncate -s $iMageSize /mnt.img
+          sudo truncate -s $iMageSize /root.img
+          Loop1=$(sudo losetup --find --show /mnt.img)
+          Loop2=$(sudo losetup --find --show /root.img)
+          sudo pvcreate $Loop1 $Loop2
+          sudo vgcreate github $Loop1 $Loop2
+          sudo lvcreate -n runner -l 100%FREE github
+          sudo mkfs.ext4 -F -b 4096 -m 0 -O "has_journal,sparse_super,dir_index" \
+           /dev/github/runner
+
+          sudo mkdir -p $MainDir
+          sudo mount /dev/github/runner $MainDir
+          sudo chown -R runner:runner $MainDir
+          df -Th
+
+      - name: Prepare | Source Code
+        working-directory: /builder
+        run: |          
+          if [ "${{ matrix.desktop }}" = "yes" ]; then
+            git clone --branch v26.2.0-trunk.844 --depth 1 --single-branch --no-tags \
+             https://github.com/armbian/build.git ${{ env.BuildDir }}
+            wget -nv "${{ env.BuildDL }}"
+            tar -xf ${{ env.BuildSource }}
+            cd /builder/${{ env.BuildDir }}
+
+          else
+            git clone --depth 1 --single-branch --no-tags \
+             https://github.com/armbian/build.git ${{ env.BuildDir }}
+            cd ${{ env.BuildDir }}
+          fi
+
+      - name: Build | Compile
+        working-directory: /builder/${{ env.BuildDir }}
+        run: |
+          if [ "${{ matrix.board }}" = "uefi-x86" ]; then
+            SetVersion="${{ env.UefiVersion }}"
+          else
+            SetVersion=""
+          fi
+
+          chmod +x compile.sh
+          ./compile.sh build \
+            EXPERT=yes \
+            BOARD=${{ matrix.board }} \
+            BRANCH=edge \
+            RELEASE=${{ matrix.release }} \
+            BUILD_DESKTOP=${{ matrix.desktop }} \
+            BUILD_MINIMAL=no \
+            DESKTOP_APPGROUPS_SELECTED= \
+            DESKTOP_ENVIRONMENT="${{ matrix.environment }}" \
+            DESKTOP_ENVIRONMENT_CONFIG_NAME="${{ matrix.config_name }}" \
+            KERNEL_BTF=no \
+            KERNEL_CONFIGURE=no \
+            KERNEL_GIT=shallow \
+            DOCKER_ARMBIAN=no \
+            BUILD_AUTO_UPDATE=no \
+            IMAGE_VERSION="$SetVersion" \
+            REVISION="$SetVersion"
+
+      - name: Upload | Image
+        uses: actions/upload-artifact@v7
+        with:
+          name: Armbian-${{ matrix.board }}-${{ matrix.release }}-${{ matrix.type }}-${{ github.run_id }}
+          path: /builder/${{ env.BuildDir }}/output/images/*.img*
+          retention-days: 30
+          archive: true
+          if-no-files-found: error
+
+      - name: Upload | Header
+        uses: actions/upload-artifact@v7
+        with:
+          name: Header-Armbian-${{ matrix.board }}-${{ matrix.release }}-${{ github.run_id }}
+          path: /builder/${{ env.BuildDir }}/output/debs/*linux-headers*
+          retention-days: 30
+          archive: true
+          if-no-files-found: error
+
+      - name: Upload | Kernel
+        uses: actions/upload-artifact@v7
+        with:
+          name: Kernel-Armbian-${{ matrix.board }}-${{ matrix.release }}-${{ github.run_id }}
+          path: /builder/${{ env.BuildDir }}/output/debs/*linux-image*
+          retention-days: 30
+          archive: true
+          if-no-files-found: error

@@ -1,0 +1,104 @@
+name: 2. MiniOS x864 Build LXFice Sid Noble Trixie Resolute Excalibur
+
+on:
+  schedule:
+    - cron: '0 0 */2 * *' # Run every 2 Days
+  workflow_dispatch:
+
+env:
+  TZ: Etc/GMT-7
+  iMageSize: 50GiB
+  MainDir: /builder
+
+  BuildDL: https://github.com/1compk/dl/releases/download/dl/zMiniOS.Build.01.09.2026.tar.xz
+  BuildSource: zMiniOS.Build.01.09.2026.tar.xz
+  BuildDir: MiniOS.Build.2026
+  BaseVersion: Lastest
+  CustomVersion: SkyLine Edition 2026 LXFice
+  FirefoxDir: linux-live/scripts/03-gui-base/rootcopy-postinstall/opt/
+
+jobs:
+  build:
+    name: MiniOS-${{ matrix.release }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.board == 'uefi-x86' && 'ubuntu-26.04' || 'ubuntu-26.04-arm' }}
+    timeout-minutes: 600
+    strategy:
+      fail-fast: false
+      matrix:
+        release: [ sid, noble, trixie, bookworm, resolute, excalibur ]
+        board: [ uefi-x86 ]
+        arch: [ amd64 ]
+        include:
+          - { release: trixie, arch: i386, board: uefi-x86 }
+          - { release: bookworm, arch: i386, board: uefi-x86 }
+          - { release: excalibur, arch: i386, board: uefi-x86 }
+
+    steps:
+      - name: Prepare | Init & LVM
+        run: |
+          lscpu | grep -E "Model name|CPU\(s\):"
+          sudo timedatectl set-timezone "${TZ}"
+          
+          #sudo modprobe f2fs
+          sudo truncate -s $iMageSize /mnt.img
+          sudo truncate -s $iMageSize /root.img
+          Loop1=$(sudo losetup --find --show /mnt.img)
+          Loop2=$(sudo losetup --find --show /root.img)
+          sudo pvcreate $Loop1 $Loop2
+          sudo vgcreate github $Loop1 $Loop2
+          sudo lvcreate -n runner -l 100%FREE github
+          sudo mkfs.ext4 -F -b 4096 -m 0 -O "has_journal,sparse_super,dir_index" \
+           /dev/github/runner
+
+          sudo mkdir -p $MainDir
+          sudo mount /dev/github/runner $MainDir
+          sudo chown -R runner:runner $MainDir
+          df -Th
+
+      - name: Prepare | Source Code
+        working-directory: /builder
+        run: |
+          wget -nv "${{ env.BuildDL }}"
+          tar -xf "${{ env.BuildSource }}"
+
+          if [ "${{ matrix.arch }}" = "amd64" ]; then
+            FFURL="https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US"
+          else
+            FFURL="https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US"
+          fi
+
+          Target2OPT="/builder/${{ env.BuildDir }}/${{ env.FirefoxDir }}"
+
+          mkdir -p "$Target2OPT"
+          wget -nv "$FFURL" -O firefox-esr.tar.xz
+          tar -xf firefox-esr.tar.xz -C "$Target2OPT" --transform 's/^firefox/firefox-esr/'
+
+      - name: Build | Compile
+        working-directory: /builder/${{ env.BuildDir }}
+        run: |
+          sudo apt-get update
+          sudo chown -R root:root /builder/${{ env.BuildDir }}
+          sudo apt-get install -y debootstrap squashfs-tools xz-utils xorriso \
+           mtools rsync grub-common e2fsprogs lvm2 pv wget gettext gpgv musl \
+           shim-signed grub-efi-amd64-bin grub-efi-amd64-signed musl-tools gcc-multilib
+
+          sudo -E bash ./minios-cmd -d ${{ matrix.release }} -a ${{ matrix.arch }} -de xfce \
+           -pv standard -c zstd -l en_US -tz "${TZ}" -ib dracut
+
+      - name: Upload | ISO
+        uses: actions/upload-artifact@v7
+        with:
+          name: MiniOS-${{ matrix.release }}-${{ matrix.arch }}-${{ github.run_id }}
+          path: /builder/${{ env.BuildDir }}/build/iso/*.iso
+          retention-days: 30
+          archive: false
+          if-no-files-found: error
+
+      - name: Upload | Sb Files
+        uses: actions/upload-artifact@v7
+        with:
+          name: MiniOS-SB-Files-${{ matrix.release }}-${{ github.run_id }}
+          path: /builder/${{ env.BuildDir }}/build/*${{ matrix.release }}*/image/minios/*.sb
+          retention-days: 30
+          archive: true
+          if-no-files-found: error
